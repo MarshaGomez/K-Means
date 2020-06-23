@@ -21,7 +21,9 @@ In this project you must:
 3. Implement the designed MapReduce algorithm using the Spark framework;
 4. Test both implementations on a synthetic or real-world dataset;
 5. Write a project report detailing your design, implementations and reporting the experimental results.
+
 For higher marks, please address efficiency issues in your implementation; examples include, but are not limited to, the following:
+
 * Use combiners and/or more than 1 reducer;
 * Use custom WritableComparable objects;
 * Use the Mapper and Reducer classes adequately;
