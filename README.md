@@ -22,7 +22,7 @@ In this project you must:
 4. Test both implementations on a synthetic or real-world dataset;
 5. Write a project report detailing your design, implementations and reporting the experimental results.
 For higher marks, please address efficiency issues in your implementation; examples include, but are not limited to, the following:
-• Use combiners and/or more than 1 reducer;
-• Use custom WritableComparable objects;
-• Use the Mapper and Reducer classes adequately;
-• Test your implementations on a range of different datasets, i.e., *n* = 1,000, 10,000 and 100,000, *d* = 3 and 7, and *k* = 7 and 13.
+* Use combiners and/or more than 1 reducer;
+* Use custom WritableComparable objects;
+* Use the Mapper and Reducer classes adequately;
+* Test your implementations on a range of different datasets, i.e., *n* = 1,000, 10,000 and 100,000, *d* = 3 and 7, and *k* = 7 and 13.
