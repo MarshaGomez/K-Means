@@ -1,71 +1,25 @@
 GOALS
-
-
-
+1 - HOW Choose initial centroids ()
+2 - MAP logic (+)
+3 - Reduce logic ()
+4 - Create hadoop project ()
+5 - Create spark project ()
 
 ------------------------------------------------------------------------------------------
-1 - Choose initial centroids:
+ALGORITHMS FOR INITIAL CENTROID:
 
 - Hartigan and Wong
 - Pick from the all set k points, doing a loop and pick randonly k points
 - pick the first k points
 - Create random k points with the process you create the dataset (use the same function of generator)
 
+HOMEWORK:
+- Hartigan and Wong
+- Preprocess the dataset (weather dataset)
 
-Data set
+DATASET
 - weather dataset: (https://www.kaggle.com/prakharrathi25/weather-data-clustering-using-k-means)
 - online retail dataset (https://www.kaggle.com/hellbuoy/online-retail-k-means-hierarchical-clustering)
 - Customer Segmentation: (https://www.kaggle.com/biphili/customer-centricity-k-means)
-
-
-Homework:
-- Hartigan and Wong
-- Preprocess the dataset
-
-
-INPUT:
-- dataSet   : filename where the data is.
-- k         : number of clusters
-- condition : (TODO)
-
-Main
-
-Parse the arguments set them as configuration // For hadoop is put the in configuration object and in spark is to use sys.argv
-centroids = Choose initial centroids
-save centroids in memory/file
-
-
-load_centroids():
-  centroids_list = []
-
-  for each centroids:
-      centroid = parse the centroid
-      add a centroid to the centroids_list
-
-  return centroids_list
-
-while is not converged:
-  # SET UP
-  centroids = load the centroids from file/memory (load_centroids)
-
-  # MAP
-  method map(point):
-    point = parse the list of values from string (split to convert in and array of values)
-
-    # decide to what centroid this point belongs to
-    distance = INFINITY
-    auxiliar_centroid = null
-
-    for each centroid in centroids_list:
-      euclidean_distance = find euclidean distance between centroid and point
-
-      if euclidean_distance < distance:
-        distance = euclidean_distance
-        auxiliar_centroid = centroid
-
-    EMIT(auxiliar_centroid, point)
-
-  # REDUCE
-  save the centroids we found in file/memory
 
 
