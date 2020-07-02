@@ -1,0 +1,95 @@
+DESCRIPTION OF K-MEANS = The k-means method is based on the concept of centroids.
+Suppose that a dataset D contains n objects within the Euclidean space. With the partitioning method the dataset D is divided into C1,…, Ck cluster.
+The centroid-based technique consists in using the centroid ci to identify the Ci cluster. Conceptually the centroid indicates the central point of the cluster.
+The goal is to minimize the sum of the squares of errors for all objects within the dataset where p is a point in space that represents a given object and
+there is the centroid of the Ci cluster, so as to obtain compact clusters and the most separated from each other.
+The k-means defines the centroid of the cluster as the average of the points within the cluster.
+At the beginning, k objects of D are selected that initially represent either the average or the center of the cluster,
+the remaining objects are assigned to the cluster they most resemble and this similarity derives from the Euclidean distance from
+the point to the center of the cluster. Once an object is added to the cluster the average is recalculated and all other
+objects will then be assigned to the cluster based on the average just calculated; the iteration continues until
+a cluster is obtained which is equal to the cluster formed in the previous iteration.
+
+
+INPUT:
+- dataSet   : filename where the data is.
+- centroids : filename where the centroids are.
+- k         : number of clusters
+
+Main
+====
+
+Parse the arguments set them as configuration // For hadoop is put the in configuration object and in spark is to use sys.argv
+
+centroids = Choose initial centroids RANDOMLY from the whole dataset
+save centroids in memory/file
+
+Initialize the counter of the converged centroids (converged_centroids = 0)
+
+while converged_centroids < k :
+  converged_centroids = 0
+
+  # SET UP
+  centroids = load the centroids from file/memory (load_centroids())
+
+  # MAP
+  method map(point):
+    point = parse the list of values from string (split to convert in and array of values)
+
+    # decide to what centroid this point belongs to
+    distance = INFINITY
+    auxiliar_centroid = null
+
+    for each centroid in centroids_list:
+      euclidean_distance = find euclidean distance between centroid and point
+
+      if euclidean_distance < distance:
+        distance = euclidean_distance
+        auxiliar_centroid = centroid
+
+    EMIT(auxiliar_centroid, point)
+
+  # REDUCE
+  method reduce(centroid, points):
+    generate an empty vector (auxiliar_centroid) which the same dimension of the points
+
+
+    1, [[ 1, 1, 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ]]
+
+    for each point
+      sum all the coordinates and update the auxiliar_centroid
+
+    auxiliar_centroid = [5, 5, 5]
+
+    for each dimension
+      calculate the mean value dividing the auxiliar_centroid value for dimension i by the number of points
+
+    auxiliar_centroid = [
+      5 / 5,
+      5 / 5,
+      5 / 5
+    ]
+
+    centroid = [1, 1, 1]
+    auxiliar_centroid = [1, 1, 1]
+
+    EMIT(index(centroid), values(auxiliar_centroid)) // save the centroids we found in file/memory
+
+    find euclidean_distance between centroid and the auxiliar_centroid
+
+    if euclidean_distance 0 <= threshold 0.5:
+      converged_centroids = converged_centroids + 1
+
+
+converged_centroids = 2
+// LOOP FINISH
+
+
+load_centroids():
+  centroids_list = []
+
+  for each centroids:
+      centroid = parse the centroid // "3,4,6" -> [3, 4, 6]
+      add a centroid to the centroids_list
+
+  return centroids_list

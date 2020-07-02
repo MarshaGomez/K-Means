@@ -9,7 +9,7 @@ Let ![equation](https://render.githubusercontent.com/render/math?math=X%3D%5Clef
 In other words, we wish to choose _k_ means so as to minimize the sum of the squared distances between each point in the data set and the mean closest to that point.
 Finding an exact solution to this problem is _NP-hard_. However, there are a number of heuristic algorithms which yield good approximate solutions. The standard algorithm for solving the _k-means_ problem uses an iterative process which guarantees a decrease in total error (value of the objective function _f(M)_) on each step. The algorithm is as follows:
 
-![Image of Yaktocat](k-means.PNG)
+![Image of Yaktocat](img/k-means.PNG)
 
 In other words, the _k-means_ algoritm chooses _k_ initial means ![equation](https://render.githubusercontent.com/render/math?math=%5Cmu_%7B1%7D%2C...%2C%5Cmu_%7Bk%7D) uniformly at random from the set _X_ (line 1). Then, for each point ![equation](https://render.githubusercontent.com/render/math?math=x%5Cepsilon%20X), it finds the closest mean ![equation](https://render.githubusercontent.com/render/math?math=%5Cmu_%7B1%7D) and adds _x_ to a set ![equation](https://render.githubusercontent.com/render/math?math=%5Comega_%7Bc%7D) (lines 5-7) initially empty (lines 3-4). Then, for each mean ![equation](https://render.githubusercontent.com/render/math?math=%5Cmu_%7Bi%7D), it recomputes the mean value to be the the centroid of the data points in ![equation](https://render.githubusercontent.com/render/math?math=%5Comega_%7Bi%7D) (lines 8-9).
 These steps are repeated until the means have converged (line 2). The convergence criterion is typically when the total error stops changing between steps, in which case a local optimum of the objective function has been reached.
@@ -40,7 +40,7 @@ For higher marks, please address efficiency issues in your implementation; examp
 
 ---
 
-## ALGORITHMS FOR INITIAL CENTROID:
+## Algorith for initial Centroid:
 
 - Hartigan and Wong
 - Pick from the all set k points, doing a loop and pick randonly k points
@@ -57,3 +57,24 @@ Datasets
 - Weather dataset: (https://www.kaggle.com/prakharrathi25/weather-data-clustering-using-k-means)
 - Online retail dataset (https://www.kaggle.com/hellbuoy/online-retail-k-means-hierarchical-clustering)
 - Customer Segmentation: (https://www.kaggle.com/biphili/customer-centricity-k-means)
+
+### Helpers
+
+#### Clean and make new maven package. Run it with the pom.xml is
+
+```shell
+mvn clean package
+```
+
+#### Hadoop runable - java code kmeans <input> <k> <dimension> <threshold> <centroidsFilename> <output>"
+
+hadoop jar target/kmeans-1.0-SNAPSHOT.jar it.unipi.hadoop.Kmeans data.txt 4 2 0.5 centroids.txt output
+
+#### Spark runable - python code kmeans <input> <k> <dimension> <threshold> <centroidsFilename> <output>"
+
+```shell
+start-dfs.sh
+start-yarn.sh
+
+spark-submit kmeans.py data.txt 4 2 0.5 centroids.txt output
+```
