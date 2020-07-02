@@ -1,8 +1,24 @@
 import sys
+import argparse
+
 from operator import add
 from math import pow, sqrt
-
 from pyspark import SparkContext
+
+
+# Setting up arguments parser
+parser = argparse.ArgumentParser(description='Process gnocchi requests.')
+
+parser.add_argument('--k', type=int, default=2, help='Total number of dimensions.')
+parser.add_argument('--d', type=int, default=2, help='Distance function.')
+parser.add_argument('--t', default=0.1, help='Threshold. Value for flexibility of the convergency.')
+parser.add_argument('--max_iteration', default=15, help='Date gnocchi use for start the process.')
+parser.add_argument('--i', default="ec021b1a-9156-4011-9b62-8d861d4b6eb3", help='Metric ID. Use by default Huminity Metric ID.')
+parser.add_argument('--o', default="ec021b1a-9156-4011-9b62-8d861d4b6eb3", help='Metric ID. Use by default Huminity Metric ID.')
+
+args = parser.parse_args()
+
+
 
 def print_arguments(argv):
     print("======PARAMETERS======")
