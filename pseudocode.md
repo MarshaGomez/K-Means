@@ -48,6 +48,7 @@ Here is the pseudocode describing the iterations:
 | DataSet   | File name of the collection of data.     |
 | _k_       | Total number of dimensions               |
 | _d_       | Distance function                        |
+| _n_       | Number of observations                   |
 | threshold | Value for flexibility of the convergency |
 
 ### Main

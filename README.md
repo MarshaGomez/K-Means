@@ -66,11 +66,11 @@ Datasets
 mvn clean package
 ```
 
-#### Hadoop runable - java code kmeans <input> <k> <dimension> <threshold> <centroidsFilename> <output>"
+#### Hadoop runable - java code kmeans [input] [k] [dimension] [threshold] [centroidsFilename] [output]
 
 hadoop jar target/kmeans-1.0-SNAPSHOT.jar it.unipi.hadoop.Kmeans data.txt 4 2 0.5 centroids.txt output
 
-#### Spark runable - python code kmeans <input> <k> <dimension> <threshold> <centroidsFilename> <output>"
+#### Spark runable - python code kmeans [input] [k] [dimension] [threshold] [centroidsFilename] [output]
 
 ```shell
 start-dfs.sh
