@@ -78,3 +78,7 @@ start-yarn.sh
 
 spark-submit kmeans.py data.txt 4 2 0.5 centroids.txt output
 ```
+
+### Credits
+
+This project was developed by University of Pisa Students: [@fxisco](https://github.com/fxisco), [@fabianaritorti](https://github.com/fabianaritorti), [@luigiarena](https://github.com/luigiarena), [@MarshaGomez](https://github.com/MarshaGomez)
