@@ -36,11 +36,13 @@ public class KMeansReducer extends Reducer<Centroid, Point, NullWritable, Text> 
       long numElements = 0;
       
       for (Point currentPoint : values) {
+        
         meanCentroid.add(currentPoint);
         numElements++;
       }
 
       meanCentroid.setId(key.getId());
+
       meanCentroid.calculateMean(numElements);
       
       Centroid copy = Centroid.copy(meanCentroid);

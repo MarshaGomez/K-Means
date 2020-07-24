@@ -48,7 +48,7 @@ public class KMeansMapper extends Mapper<Object, Text, Centroid, Point> {
       Double coordinate = Double.valueOf(word.toString());
       pointsList.add(new DoubleWritable(coordinate));
       count = count + 1;
-      // context.write(new Text("key"), word);
+      
 
       if (count == configurationDimension) {
         break;

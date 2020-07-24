@@ -1,4 +1,3 @@
-
 import sys
 import time
 from math import pow, sqrt
@@ -50,6 +49,15 @@ def get_mean_centroids(cluster):
 
   return (cluster[0], mean_centroid)
 
+def sumCoordinates(accum, element):
+  for index in range(len(element)):
+    accum[index] = accum[index] + element[index]
+
+  return accum
+
+
+
+
 
 if __name__ == "__main__":
   if len(sys.argv) < 5:
@@ -77,17 +85,16 @@ if __name__ == "__main__":
   lines = sc.textFile(sys.argv[1])
   convergence_count = 0
   iteration_count = 0
-  #remember cache
-  points = lines.map(lambda x: parsePoint(x, dimension))# .cache()
+  points = lines.map(lambda x: parsePoint(x, dimension)).cache()
   random_centroids = []
 
   while (convergence_count < k):
     convergence_count = 0
 
     if iteration_count == 0:
-      #comment line 88
+      # comment line 88
       random_centroids = points.takeSample(False, k)
-      # Be careful with dimension and K
+
       #d = 3 k = 7
       #random_centroids = [[0.297959,0.474801,0.448468], [0.297959,0.480106,0.214485], [0.297959,0.482759,0.247911], [0.297959,0.482759,0.51532], [0.297959,0.469496,0.211699], [0.297959,0.458886,0.220056], [0.297959,0.453581,0.239554]]
       # d = 3 k = 13
@@ -106,8 +113,16 @@ if __name__ == "__main__":
       random_centroids = [mean_centroid[1] for mean_centroid in mean_centroids]
     
     clusters_points = points.map(lambda x: assign_nearest_centroid(x, random_centroids))
-    clusters = clusters_points.groupByKey()
-    mean_centroids = clusters.map(lambda cluster: get_mean_centroids(cluster)).collect()
+    points_count = clusters_points.countByKey()
+    sum_clusters = clusters_points.reduceByKey(lambda accum, y: sumCoordinates(accum, y))
+    sum_clusters_collection = sum_clusters.sortByKey().collect()
+    mean_centroids = []
+
+    for index in range(len(sum_clusters_collection)):
+      array = sum_clusters_collection[index][1]
+      array = [(array[i] / points_count[index]) for i in range(dimension)]
+
+      mean_centroids.append((sum_clusters_collection[index][0], array))
 
     for index in range(len(mean_centroids)):
       mean_centroid_index = mean_centroids[index][0]
@@ -119,19 +134,17 @@ if __name__ == "__main__":
         convergence_count+=1
     
     iteration_count+=1
+    print("=======================")
+    print("MEAN CENTROIDS::")
+    print("=======================")
+    print(mean_centroids)
   
-  print("MEAN CENTROIDS::")
-  print("=======================")
-  print(mean_centroids)
-
   
   print("=======================")
   print("CONVERGED CENTROIDS COUNT: " + str(convergence_count))
   print("=======================")
   print("ITERATIONS COUNT: " + str(iteration_count))
   print("=======================")
-
-  
 
   # print(clusters.collect())
 
@@ -144,82 +157,33 @@ if __name__ == "__main__":
 
 # spark-submit kmeans.py data.txt 3 3 0.5 centroids.txt output
 
-#THRESHOLD 0.05
 
-# test point n = 1.000
-# spark-submit kmeans.py points-1k.txt 7 3 0.05 centroids.txt output (ok)
-# spark-submit kmeans.py points-1k.txt 13 3 0.05 centroids.txt output (ok)
-# spark-submit kmeans.py points-1k.txt 7 7 0.05 centroids.txt output (ok)
-# spark-submit kmeans.py points-1k.txt 13 7 0.05 centroids.txt output (ok)
-
-# test point n = 10.000
-# spark-submit kmeans.py points-10k.txt 7 3 0.05 centroids.txt output (ok)
-# spark-submit kmeans.py points-10k.txt 13 3  centroids.txt output (ok)
-# spark-submit kmeans.py points-10k.txt 7 7 0.05 centroids.txt output (ok)
-# spark-submit kmeans.py points-10k.txt 13 7 0.05 centroids.txt output (ok)
-
-
-# test point n = 100.000
-# spark-submit kmeans.py points-100k.txt 7 3 0.05 centroids.txt output(ok)
-# spark-submit kmeans.py points-100k.txt 13 3 0.05 centroids.txt output (ok)
-# spark-submit kmeans.py points-100k.txt 7 7 0.05 centroids.txt output (ok)
-# spark-submit kmeans.py points-100k.txt 13 7 0.05 centroids.txt output (ok)
 
 #THRESHOLD 0.0001
 
 # test point n = 1.000
-# spark-submit kmeans.py points-1k.txt 7 3 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-1k.txt 13 3 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-1k.txt 7 7 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-1k.txt 13 7 0.0001 centroids.txt output (ok) 
+# spark-submit kmeans.py points-1k.txt 7 3 0.0001 centroids.txt output 
+# spark-submit kmeans.py points-1k.txt 13 3 0.0001 centroids.txt output 
+# spark-submit kmeans.py points-1k.txt 7 7 0.0001 centroids.txt output 
+# spark-submit kmeans.py points-1k.txt 13 7 0.0001 centroids.txt output  
 
 # test point n = 10.000
-# spark-submit kmeans.py points-10k.txt 7 3 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-10k.txt 13 3 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-10k.txt 7 7 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-10k.txt 13 7 0.0001 centroids.txt output (ok) 
+# spark-submit kmeans.py points-10k.txt 7 3 0.0001 centroids.txt output  
+# spark-submit kmeans.py points-10k.txt 13 3 0.0001 centroids.txt output  
+# spark-submit kmeans.py points-10k.txt 7 7 0.0001 centroids.txt output 
+# spark-submit kmeans.py points-10k.txt 13 7 0.0001 centroids.txt output 
 
 
 # test point n = 100.000
-# spark-submit kmeans.py points-100k.txt 7 3 0.0001 centroids.txt output(ok) 
-# spark-submit kmeans.py points-100k.txt 13 3 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-100k.txt 7 7 0.0001 centroids.txt output (ok) 
-# spark-submit kmeans.py points-100k.txt 13 7 0.0001 centroids.txt output (ok)
-
-# random_Centroids::
-# [[0.297959, 0.469496, 0.211699], [0.297959, 0.474801, 0.448468], [0.297959, 0.450928, 0.401114]]
-# 
-# mean_centroids::
-# 
-# [(1, [0.297959, 0.47878, 0.481894]), (0, [0.29795900000000003, 0.463812, 0.24074814285714283]), (2, [0.297959, 0.450928, 0.401114])]
-
-#[(0, [0.297959, 0.46949599999999997, 0.45496733333333333]), (1, [0.29795900000000003, 0.46595933333333334, 0.23212633333333332]), (2, [0.297959, 0.450928, 0.292479])]
+# spark-submit kmeans.py points-100k.txt 7 3 0.0001 centroids.txt output
+# spark-submit kmeans.py points-100k.txt 13 3 0.0001 centroids.txt output  
+# spark-submit kmeans.py points-100k.txt 7 7 0.0001 centroids.txt output 
+# spark-submit kmeans.py points-100k.txt 13 7 0.0001 centroids.txt output 
 
 
-#[[0.297959, 0.450928, 0.401114], [0.297959, 0.450928, 0.292479], [0.297959, 0.453581, 0.239554]]
 
 
-#RANDOM CENTROIDS PICKED
-#[[0.297959, 0.450928, 0.259053], [0.297959, 0.450928, 0.292479], [0.297959, 0.450928, 0.401114]]
-#CLUSTERS_CENTROIDS
-
-#(0, [0.297959, 0.453581, 0.239554]), (1, [0.297959, 0.450928, 0.292479]), (0, [0.297959, 0.450928, 0.259053]), (2, [0.297959, 0.450928, 0.401114])]
-
-#  [0.297959, 0.474801, 0.448468]
-
-#  [0.297959 + 0.297959, 0.474801 +  0.482759, 0.448468 + 0.51532]
 
 
-# COLLECTED CLUSTERS: 0
-# [0.297959, 0.474801, 0.448468]
-# [0.297959, 0.482759, 0.51532]
-# [0.297959, 0.450928, 0.401114]
-# COLLECTED CLUSTERS: 1
-# [0.297959, 0.480106, 0.214485]
-# [0.297959, 0.469496, 0.211699]
-# [0.297959, 0.458886, 0.220056]
-# COLLECTED CLUSTERS: 2
-# [0.297959, 0.482759, 0.247911]
-# [0.297959, 0.453581, 0.239554]
-# [0.297959, 0.450928, 0.292479]
-# [0.297959, 0.450928, 0.259053]
+
+

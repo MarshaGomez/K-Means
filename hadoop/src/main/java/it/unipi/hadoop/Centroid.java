@@ -22,6 +22,7 @@ public class Centroid extends Point {
     this.id = new IntWritable(-1);
   }
 
+  // Create a deep copy of coordinate
   Centroid(IntWritable id, List<DoubleWritable> coordinates) {
     super(coordinates);
 
@@ -60,6 +61,7 @@ public class Centroid extends Point {
     return Integer.compare(this.getId().get(), otherCentroid.getId().get());
   }
 
+  // Make a deep copy of the centroid 
   public static Centroid copy(final Centroid old) {
     return new Centroid(old.getId(), old.getCoordinates());
   }

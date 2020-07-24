@@ -33,6 +33,7 @@ public class RandomCentroidsReducer extends Reducer<IntWritable, Text, NullWrita
     }
 
     @Override
+    // We receive id as IntWritable and values as Iterable Text
     public void reduce(IntWritable randomInteger, Iterable<Text> values, Context context) throws IOException, InterruptedException {
       for (Text point : values) {
         if (counter < K) {

@@ -117,7 +117,7 @@ public class Kmeans {
         fs.delete(output, true);
       }
 
-      Job job = Job.getInstance(conf, "Kmean JAVA");
+      Job job = Job.getInstance(conf, "Kmean JAVA " + (iterations + 1));
       
       job.getConfiguration().set("k", otherArgs[1]);
       job.getConfiguration().set("dimension", otherArgs[2]);
