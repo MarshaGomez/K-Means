@@ -170,6 +170,10 @@
     \section{Pseudocode}
     \paragraph{}
 
+    \clearpage
+    \subsection{Kmeans Algorithm}
+    \paragraph{}
+
     \begin{algorithm}[H]
         \SetAlgoLined
         \KwResult{The k-means algorithm using distributed computation}
@@ -200,7 +204,10 @@
         \Return{convergedCentroids}\;
         \caption{$kMeans(dataset, k, dimension, threshold, centroids, output)$}
     \end{algorithm}
-
+    
+    \clearpage
+    \subsection{Map Algorithm}
+    \paragraph{}
 
     \begin{algorithm}[H]
         \SetAlgoLined
@@ -233,6 +240,9 @@
         \caption{$MAP(line)$}
     \end{algorithm}
 
+    \clearpage
+    \subsection{Reduce Algorithm}
+    \paragraph{}
 
     \begin{algorithm}[H]
     \SetAlgoLined
@@ -256,7 +266,6 @@
     \caption{$REDUCE(centroid, values)$}
     \end{algorithm}
 
-
     \section{K-means in Hadoop}
     \paragraph{}
     
@@ -266,6 +275,9 @@
     To choose initial random centroids, we used a MapReduce solution that exploits the sorter functionalities.  
 
     Initially, the mapper receives as input a text line and outputs each line with a random integer as key. 
+
+    \subsection{Map in Hadoop Algorithm}
+    \paragraph{}
 
     \begin{algorithm}[H]
         \SetAlgoLined
@@ -279,8 +291,11 @@
         $EMIT(id, line)$\;
          \caption{$MAP(line)$}
     \end{algorithm}
-        
-        
+    
+    \clearpage
+    \subsection{Reduce in Hadoop Algorithm}
+    \paragraph{}
+
     \begin{algorithm}[H]
         \SetAlgoLined
         \KwResult{Reduce to find the mean centroid of each cluster}
@@ -315,13 +330,14 @@
 
     Finally, the reducer outputs the first K values, throwing away the keys. 
 
+    \clearpage
     \subsection{Job}
     \paragraph{}
 
     The steps below explains how a MapReduce job is created for processing a kmeans iteration: 
 
     \begin{figure}[H]
-        \includegraphics[width=12cm]{code/kMean-iteration}
+        \includegraphics[width=12cm]{code/converged_centroids}
         \centering
         \caption{Kmeans iteration}
     \end{figure}
@@ -389,46 +405,54 @@
     \section{K-means in Spark}
     \paragraph{}
 
-    \subsection{Spark Driver}
-    \paragraph{}
-
-    In \textbf{line 60} we initialize the Spark Context that represents a connection with the \textbf{master} system. At the master argument we specifying \textit{\"yarn\"} because we want to connect to the yarn cluster. In the \textbf{lines 62 to line 64} we parse the argument values. 
-
-    \begin{figure}[H]
-        \includegraphics[width=12cm]{code/main}
-        \centering
-        \caption{Kmeans Spark}
-    \end{figure}
-
-    In the last section of the program (lines 71-92) we run the job and evaluate if we need another iteration. In line 77 we replaced the centroid with the mean previous one. 
-
     \subsection{How to select random centroids in Spark?}
     \paragraph{}
 
     \begin{figure}[H]
-        \includegraphics[width=12cm]{code/convergence_count}
+        \includegraphics[width=12cm]{code/convergence_count_small}
         \centering
         \caption{Kmeans Spark}
     \end{figure}
 
-    In the command line 88 above we want to create a subset of RDD with fixed-size. The code has two parameters: 
+    In the command \textbf{line 92} above we want to create a subset of RDD with fixed-size. The code has two parameters: 
     \begin{itemize}
         \item The first parameter specifies if we want to use replacement, In this case not, because we want unrepeated items. 
-        \item The second parameter is the number of elements that we want, in our case k represents the number of initial centroids needed. 
+        \item The second parameter is the number of elements that we want, in our case \textbf{k} represents the number of initial centroids needed. 
     \end{itemize}
+
+    \subsection{Spark Driver}
+    \paragraph{}
+
+   In line \textbf{76} we initialize the Spark Context that represents a connection with the master system. At the master argument we specifying \textit{yarn} because we want to connect to the yarn cluster. In the \textbf{lines 78 to line 81} we parse the argument values. 
+
+    \begin{figure}[H]
+        \includegraphics[width=12cm]{code/kmeans-spark}
+        \centering
+        \caption{Yarn Kmeans Spark}
+    \end{figure}
+
+	In the last section of the program \textbf{lines 87 to line 135} we run the job and evaluate if we need another iteration. In \textbf{line 110} we replaced the centroid with the mean previous one. 
+
+    \begin{figure}[H]
+        \includegraphics[width=12cm]{code/convergence_count}
+        \centering
+        \caption{Kmeans iteration}
+    \end{figure}
+
+    In the last section of the program \textbf{lines 71 to line 92} we run the job and evaluate if we need another iteration. In line 77 we replaced the centroid with the mean previous one. 
 
     \subsection{Map}
     \paragraph{}
 
-    The Map function in Spark works in a different way. In the below picture (line 108), We mapped the RDD of points taken from the file and called function assign\_nearest\_centroid to each point. 
+    The Map function in Spark works in a different way. In the below picture \textbf{line 112}, We mapped the RDD of points taken from the file and called assign\_nearest\_centroid to each point. 
 
     \begin{figure}[H]
-        \includegraphics[width=12cm]{code/random_centroids}
+        \includegraphics[width=12cm]{code/random_centroids_small}
         \centering
         \caption{Map function in Spark}
     \end{figure}
 
-    The following function is the same process as line 58 to line 69 in the java solution. 
+    The following function is the same process as \textbf{line 58 to line 69} in the java solution. 
 
     \begin{figure}[H]
         \includegraphics[width=12cm]{code/nearest_centroid}
@@ -608,9 +632,9 @@
     \section{Key Difference between Hadoop MapReduce and Spark}
     \paragraph{}
 
-	The key difference between Hadoop MapReduce and Spark lies in the approach to processing: Spark can do it in-memory, while Hadoop MapReduce must read from the memory and write to a disk. As a result, the speed of processing differs significantly – Spark may be up to 100 times faster. However, the volume of data processed also differs Hadoop MapReduce can work with far larger data sets than Spark. 
+	The key difference between Hadoop MapReduce and Spark lies in the approach to processing: Spark can do it in-memory, while Hadoop MapReduce must read from the memory and write to a disk. As a result, the speed of processing differs significantly and Spark may be up to 100 times faster. However, the volume of data processed also differs Hadoop MapReduce can work with far larger data sets than Spark. 
 
-    Each iteration will be prolonged by I/O operations, which become a more relevant slow-down factor than the number of points inside the same configuration: the execution times in the Hadoop version don’t change greatly with the size of the data set as occurs with Spark. 
+    Each iteration will be prolonged by I/O operations, which become a more relevant slow-down factor than the number of points inside the same configuration: the execution times in the Hadoop version do not change greatly with the size of the data set as occurs with Spark. 
 
     The results clearly showed that the performance of Spark turn out to be considerably higher in terms of time, where each of the dataset size results in a decrease in the processing time as compared to that of Map Reduce. 
 
