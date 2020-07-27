@@ -54,9 +54,13 @@ HOMEWORK:
 
 Datasets
 
-- Weather dataset: (https://www.kaggle.com/prakharrathi25/weather-data-clustering-using-k-means)
-- Online retail dataset (https://www.kaggle.com/hellbuoy/online-retail-k-means-hierarchical-clustering)
-- Customer Segmentation: (https://www.kaggle.com/biphili/customer-centricity-k-means)
+- [Weather dataset](https://www.kaggle.com/prakharrathi25/weather-data-clustering-using-k-means)
+- [Online retail dataset](https://www.kaggle.com/hellbuoy/online-retail-k-means-hierarchical-clustering)
+- [Customer Segmentation](https://www.kaggle.com/biphili/customer-centricity-k-means)
+
+### Documentation Report
+
+You can see the final results on the [Oficial Final Report](/documentation/Final-Project.pdf)
 
 ### Helpers
 
